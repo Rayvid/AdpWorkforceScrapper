@@ -11,6 +11,9 @@ namespace AdpWorkforceScrapper
         [JsonProperty(PropertyName = "jobName")]
         public string JobTitle;
 
+        [JsonProperty(PropertyName = "externalJobId")]
+        public string ExternalId;
+
         [JsonProperty(PropertyName = "requisitionOid")]
         public string Id;
 
