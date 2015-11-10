@@ -5,6 +5,9 @@ namespace AdpWorkforceScrapper
     [JsonObject(MemberSerialization.OptIn)]
     public class Opening
     {
+        [JsonProperty(PropertyName = "url")]
+        public string Url;
+
         [JsonProperty(PropertyName = "jobName")]
         public string JobTitle;
 

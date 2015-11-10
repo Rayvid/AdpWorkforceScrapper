@@ -24,7 +24,10 @@ namespace AdpWorkforceScrapper
 
         public void FetchOpeningDetails(Opening opening)
         {
-            var request = WebRequest.Create("https://workforcenow.adp.com/jobs/apply/metaservices/careerCenter/jobDetails/E/en_US?requisitionOid=" + opening.Id + "&client=" + _userName);
+            opening.Url =
+                "https://workforcenow.adp.com/jobs/apply/metaservices/careerCenter/jobDetails/E/en_US?requisitionOid=" +
+                opening.Id + "&client=" + _userName;
+            var request = WebRequest.Create(opening.Url);
             request.Method = "GET";
 
             var httpRequest = request as HttpWebRequest;
@@ -41,7 +44,7 @@ namespace AdpWorkforceScrapper
             var response = new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
             var openingDetails = JsonConvert.DeserializeObject<OpeningContainer>(response).Opening;
 
-            opening.Description = openingDetails.Description;
+            opening.PostDate = openingDetails.PostDate;
             opening.JobTitle = openingDetails.JobTitle;
             opening.Description = openingDetails.Description;
         }
