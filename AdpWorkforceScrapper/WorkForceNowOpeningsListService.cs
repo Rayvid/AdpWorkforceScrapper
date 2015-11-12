@@ -55,10 +55,14 @@ namespace AdpWorkforceScrapper
             dataStream.Write(uft8Data, 0, uft8Data.Length);
             dataStream.Close();
 
-            var response = request.GetResponse();
-            var openings = JsonConvert.DeserializeObject<OpeningsListContainer>(new StreamReader(response.GetResponseStream()).ReadToEnd());
+            using (var response = request.GetResponse())
+            {
+                var openings =
+                    JsonConvert.DeserializeObject<OpeningsListContainer>(
+                        new StreamReader(response.GetResponseStream()).ReadToEnd());
 
-            return openings.ListContainer.List;
+                return openings.ListContainer.List;
+            }
         }
     }
 }

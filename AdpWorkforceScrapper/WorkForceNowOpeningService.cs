@@ -40,16 +40,18 @@ namespace AdpWorkforceScrapper
             httpRequest.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
             httpRequest.KeepAlive = true;
 
-            var response = new StreamReader(request.GetResponse().GetResponseStream()).ReadToEnd();
-            var openingDetails = JsonConvert.DeserializeObject<OpeningContainer>(response).Opening;
+            using (var response = request.GetResponse())
+            {
+                var openingDetails = JsonConvert.DeserializeObject<OpeningContainer>(new StreamReader(response.GetResponseStream()).ReadToEnd()).Opening;
 
-            opening.Url =
-                string.Format(
-                    "https://workforcenow.adp.com/jobs/apply/posting.html?client=theeducat&jobId={0}&lang=en_US&source=CC3",
-                    openingDetails.ExternalId);
-            opening.PostDate = openingDetails.PostDate;
-            opening.JobTitle = openingDetails.JobTitle;
-            opening.Description = openingDetails.Description;
+                opening.Url =
+                    string.Format(
+                        "https://workforcenow.adp.com/jobs/apply/posting.html?client=theeducat&jobId={0}&lang=en_US&source=CC3",
+                        openingDetails.ExternalId);
+                opening.PostDate = openingDetails.PostDate;
+                opening.JobTitle = openingDetails.JobTitle;
+                opening.Description = openingDetails.Description;
+            }
         }
     }
 }
